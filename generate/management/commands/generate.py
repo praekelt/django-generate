@@ -19,10 +19,10 @@ class Command(BaseCommand):
             name = app.__name__.replace('.models', '')
             app_path = __import__(name, {}, {}, [name.split('.')[-1]]).__path__
             try:
-                params = imp.find_module('generate', app_path)
+                params = imp.find_module('generator', app_path)
             except ImportError:
                 pass
             else:
-                generate = imp.load_module(name + '.generate', *params)
+                generator = imp.load_module(name + '.generator', *params)
 
-                generate.generate()
+                generator.generate()

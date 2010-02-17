@@ -8,13 +8,10 @@ import cStringIO
 import unicodedata
 import random
 
-from django.db.models import get_model, FileField
+from django.db.models import get_model, FileField, ImageField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.related import ManyToManyField
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
-from broadcastcms.richtext.fields import RichTextField
-from broadcastcms.scaledimage.fields import ScaledImageField
 
 SCRIPT_PATH = os.path.dirname( os.path.realpath( __file__ ) )
 USE_CACHE = True
@@ -30,10 +27,6 @@ def load_file(field, source):
     elements = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456890'
     file_name = '%s.%s' % (''.join([random.choice(elements) for n in range(8)]), file_name.split('.')[-1])
     return InMemoryUploadedFile(f, field_name, file_name, content_type, size, None)
-
-def format_rich_text(rich_text):
-    rich_text = rich_text.encode("utf-8")
-    return rich_text
 
 def fetch_from_cache(source):
     destination = source
@@ -52,7 +45,7 @@ def generate_item(item):
     model_instance = model(pk='dummy_pk')
     fields = {}
     many_to_many_fields = {}
-    scaled_image_fields = {}
+    image_fields = {}
     file_fields = {}
     password_field = ''
 
@@ -72,15 +65,12 @@ def generate_item(item):
         model_field = model_instance._meta.get_field(field)
         if isinstance(model_field, ManyToManyField):
             many_to_many_fields[str(field)] = value
-        elif isinstance(model_field, ScaledImageField):
+        elif isinstance(model_field, ImageField):
             if value:
-                scaled_image_fields[str(field)] = value
+                image_fields[str(field)] = value
         elif isinstance(model_field, FileField):
             if value:
                 file_fields[str(field)] = value
-        elif isinstance(model_field, RichTextField):
-            value = format_rich_text(value)
-            fields[str(field)] = value
         elif field == 'password':
             password_field = value
         else:
@@ -99,7 +89,7 @@ def generate_item(item):
             else:
                 obj_field.add(value)
     
-        for field, value in scaled_image_fields.items():
+        for field, value in image_fields.items():
             field_attr = getattr(obj, field)
             f = load_file(field, value)
             field_attr.save(f.name, f)

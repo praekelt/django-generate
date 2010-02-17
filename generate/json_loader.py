@@ -1,7 +1,7 @@
 import mimetypes
 import os
 import sys
-import simplejson as json
+import json
 import urllib
 import hashlib
 import cStringIO 

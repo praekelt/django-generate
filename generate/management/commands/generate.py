@@ -1,7 +1,6 @@
 import imp
 from django.core.management.base import BaseCommand, CommandError
 
-
 class Command(BaseCommand):
     def handle(self, *app_labels, **options):
         from django.db.models import get_app, get_apps, get_models

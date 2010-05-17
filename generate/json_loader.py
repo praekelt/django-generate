@@ -7,8 +7,9 @@ import hashlib
 import cStringIO 
 import unicodedata
 import random
+from datetime import datetime
 
-from django.db.models import get_model, FileField, ImageField
+from django.db.models import get_model, DateField, DateTimeField, FileField, ImageField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.related import ManyToManyField
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -73,6 +74,16 @@ def generate_item(item):
                 file_fields[str(field)] = value
         elif field == 'password':
             password_field = value
+        elif isinstance(model_field, DateTimeField):
+            try:
+                fields[str(field)] = datetime.strptime(value, "%Y-%m-%d %H:%M:%S.%f")
+            except ValueError:
+                fields[str(field)] = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+        elif isinstance(model_field, DateField):
+            try:
+                fields[str(field)] = datetime.strptime(value, "%Y-%m-%d").date()
+            except ValueError:
+                fields[str(field)] = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
         else:
             fields[str(field)] = value
 

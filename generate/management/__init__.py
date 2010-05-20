@@ -14,5 +14,12 @@ def generate(app, created_models, verbosity, **kwargs):
                 call_command("generate", interactive=True)
             break
 
-last_app = __import__("%s.models" % settings.INSTALLED_APPS[-1], globals(), locals(), ['models', ], -1)
-signals.post_syncdb.connect(generate, sender=last_app)
+last_app_with_models = None
+for app in settings.INSTALLED_APPS:
+    try:
+        last_app_with_models = __import__("%s.models" % app, globals(), locals(), ['models', ], -1)
+    except ImportError:
+        pass
+
+if last_app_with_models:
+    signals.post_syncdb.connect(generate, sender=last_app_with_models)

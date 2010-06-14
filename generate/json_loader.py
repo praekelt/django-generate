@@ -7,8 +7,9 @@ import hashlib
 import cStringIO 
 import unicodedata
 import random
+from datetime import datetime
 
-from django.db.models import get_model, FileField, ImageField
+from django.db.models import get_model, DateField, DateTimeField, FileField, ImageField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.related import ManyToManyField
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -49,35 +50,56 @@ def generate_item(item):
     file_fields = {}
     password_field = ''
 
-    for field, value in item['fields'].items():
+    if item.has_key('fields'):
+        for field, value in item['fields'].items():
         
-        if value.__class__ == list:
-            value_items = []
-            for item in value:
-                if item.__class__ == dict:
-                    value_items.append(generate_item(item))
-                else:
-                    value_items.append(item)
-            value = value_items
-        elif value.__class__ == dict:
-            value = generate_item(value)
+            if value.__class__ == list:
+                value_items = []
+                for item in value:
+                    if item.__class__ == dict:
+                        value_items.append(generate_item(item))
+                    else:
+                        value_items.append(item)
+                value = value_items
+            elif value.__class__ == dict:
+                value = generate_item(value)
 
-        model_field = model_instance._meta.get_field(field)
-        if isinstance(model_field, ManyToManyField):
-            many_to_many_fields[str(field)] = value
-        elif isinstance(model_field, ImageField):
-            if value:
-                image_fields[str(field)] = value
-        elif isinstance(model_field, FileField):
-            if value:
-                file_fields[str(field)] = value
-        elif field == 'password':
-            password_field = value
+            model_field = model_instance._meta.get_field(field)
+            if isinstance(model_field, ManyToManyField):
+                many_to_many_fields[str(field)] = value
+            elif isinstance(model_field, ImageField):
+                if value:
+                    image_fields[str(field)] = value
+            elif isinstance(model_field, FileField):
+                if value:
+                    file_fields[str(field)] = value
+            elif field == 'password':
+                password_field = value
+            elif isinstance(model_field, DateTimeField):
+                try:
+                    fields[str(field)] = datetime.strptime(value, "%Y-%m-%d %H:%M:%S.%f")
+                except ValueError:
+                    fields[str(field)] = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+            elif isinstance(model_field, DateField):
+                try:
+                    fields[str(field)] = datetime.strptime(value, "%Y-%m-%d").date()
+                except ValueError:
+                    fields[str(field)] = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+            else:
+                fields[str(field)] = value
+
+    if fields:
+        obj, created = model.objects.get_or_create(**fields)
+    else:
+        existing = model.objects.all()
+        if existing:
+            obj = existing[0]
+            created = False
         else:
-            fields[str(field)] = value
-
-    obj, created = model.objects.get_or_create(**fields)
-
+            obj = model()
+            obj.save()
+            created = True
+        
     if created:
         #print "Created %s" % obj
 

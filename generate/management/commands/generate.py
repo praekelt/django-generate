@@ -24,4 +24,5 @@ class Command(BaseCommand):
             else:
                 generator = imp.load_module(name + '.generator', *params)
 
+                print "Generating items for %s." % name.title()
                 generator.generate()

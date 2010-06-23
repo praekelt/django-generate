@@ -8,7 +8,17 @@ setup(
     author='Praekelt Foundation',
     author_email='dev@praekelt.com',
     license='BSD',
-    url='https://github.com/praekelt/django-generate',
+    url='http://github.com/praekelt/django-generate',
     packages = find_packages(),
     include_package_data=True,
+    classifiers = [
+        "Programming Language :: Python",
+        "License :: OSI Approved :: BSD License",
+        "Development Status :: 4 - Beta",
+        "Operating System :: OS Independent",
+        "Framework :: Django",
+        "Intended Audience :: Developers",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    ],
+    zip_safe=False,
 )

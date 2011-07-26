@@ -2,7 +2,7 @@ Django Generate
 ===============
 **Django slightly smarter than fixtures content generation app.**
 
-``django-generate`` adds a management command called ``generate`` which allows you to create objects from a JSON description of said objects. The objects will only be created once via Django's ``get_or_create`` method. Inheritance base model objects are created where needed. File fields can also be populated from arbitrary resources. In this way ``django-generate`` simplifies generating complex objects when compared to `Django's builtin fixtures feature <https://docs.djangoproject.com/en/dev/howto/initial-data/#providing-initial-data-with-fixtures>`_. 
+``django-generate`` adds a management command called ``generate`` which allows you to create objects from a dynamically created JSON description of said objects. It's primary focus is to generate test content for use during project development and testing. Objects are only created once via Django's ``get_or_create`` method. Inheritance base model objects are created where needed. File fields can also be populated from arbitrary resources. In this way ``django-generate`` simplifies generating complex objects when compared to `Django's builtin fixtures feature <https://docs.djangoproject.com/en/dev/howto/initial-data/#providing-initial-data-with-fixtures>`_. 
 
 .. contents:: Contents
     :depth: 5
@@ -19,3 +19,7 @@ Installation
 Usage
 -----
 
+In order to generate content you need to execute the ``generate`` management command::
+    $ python manage.py generate
+
+This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting. 

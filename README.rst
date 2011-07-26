@@ -25,11 +25,11 @@ In order to generate content you need to execute the ``generate`` management com
 
 As an example lets create 5 dummy users for testing.
 
-#. Create a ``generator.py`` in the app you want to generate content's path.
+1. Create a ``generator.py`` in the app you want to generate content's path.
 
-#. Make sure your app is specified in your ``INSTALLED_APPS`` setting. Also make sure your app has a ``models.py`` so Django installs it correctly.
+2. Make sure your app is specified in your ``INSTALLED_APPS`` setting. Also make sure your app has a ``models.py`` so Django installs it correctly.
 
-#. Edit the ``generator.py`` file to look like this::
+3. Edit the ``generator.py`` file to look like this::
 
     def generate():
         objects = []
@@ -48,9 +48,9 @@ All this is really doing is generating a bunch of JSON serialized objects dynami
     
     [{'fields': {'username': 'user_1', 'first_name': 'User 1 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_2', 'first_name': 'User 2 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_3', 'first_name': 'User 3 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_4', 'first_name': 'User 4 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_5', 'first_name': 'User 5 Name', 'is_staff': True}, 'model': 'auth.User'}]
 
-This is a normal Django JSON fixtures list of objects that will be created. You could just as easily have hard coded and returned this list instead of generating it usin the loop. The point is that the ``generate`` method should return a list of JSON serialized objects to be created.
+    This is a normal Django JSON fixtures list of objects that will be created. You could just as easily have hard coded and returned this list instead of generating it usin the loop. The point is that the ``generate`` method should return a list of JSON serialized objects to be created.
 
-#. Run the generate management command to generate the objects::
+4. Run the generate management command to generate the objects::
     
     $ python manage.py generate
     

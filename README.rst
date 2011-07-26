@@ -12,5 +12,6 @@ Installation
 
 #. Add ``generate`` to your ``INSTALLED_APPS`` setting.
 
+
 This package is part of the larger `Jmbo <http://www.jmbo.org>`_ project.
 

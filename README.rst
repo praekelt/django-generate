@@ -23,4 +23,14 @@ In order to generate content you need to execute the ``generate`` management com
 
     $ python manage.py generate
 
-This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting and call its ``generate`` method. This method should return a list of JSON serialized objects to be created. 
+This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting and call its ``generate`` method. This method should return a list of JSON serialized objects to be created.
+
+As an example lets create 5 dummy users for testing.
+
+#. Create a ``generator.py`` in the app you want to generate content's path.
+
+#. Edit the file to look like this::
+
+    wdsf
+
+#. Make sure your app is specified in your ``INSTALLED_APPS`` setting. Also make sure your app has a ``models.py`` so Django installs it correctly.

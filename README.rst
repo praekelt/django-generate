@@ -7,5 +7,10 @@ Contents:
 .. toctree::
    :maxdepth: 5
 
-This packages is part of the larger `Jmbo <http://www.jmbo.org>`_ project.
+Installation
+------------
+
+#. Install or add django-generate to your python path.
+
+This package is part of the larger `Jmbo <http://www.jmbo.org>`_ project.
 

@@ -23,4 +23,4 @@ In order to generate content you need to execute the ``generate`` management com
 
     $ python manage.py generate
 
-This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting. 
+This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting and call its ``generate`` method. This method should return a list of JSON serialized objects to be created. 

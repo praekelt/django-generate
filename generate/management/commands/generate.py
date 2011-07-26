@@ -1,5 +1,6 @@
 import imp
 from django.core.management.base import BaseCommand, CommandError
+from json_loader import load_json
 
 class Command(BaseCommand):
     def handle(self, *app_labels, **options):
@@ -25,4 +26,4 @@ class Command(BaseCommand):
                 generator = imp.load_module(name + '.generator', *params)
 
                 print "Generating items for %s." % name.title()
-                generator.generate()
+                load_json(generator.generate())

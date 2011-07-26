@@ -10,5 +10,7 @@ Installation
 
 #. Install or add django-generate to your python path.
 
+#. Add ``generate`` to your ``INSTALLED_APPS`` setting.
+
 This package is part of the larger `Jmbo <http://www.jmbo.org>`_ project.
 

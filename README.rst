@@ -20,6 +20,7 @@ Usage
 -----
 
 In order to generate content you need to execute the ``generate`` management command::
+
     $ python manage.py generate
 
 This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting. 

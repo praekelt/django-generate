@@ -19,18 +19,40 @@ Installation
 Usage
 -----
 
-In order to generate content you need to execute the ``generate`` management command::
+In order to generate content you need to execute the ``generate`` management command. This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting and call its ``generate`` method. This method should return a list of JSON serialized objects to be created.
 
-    $ python manage.py generate
-
-This command will search for a ``generator`` module in each of the apps as specified in the ``INSTALLED_APPS`` setting and call its ``generate`` method. This method should return a list of JSON serialized objects to be created.
+**Note**: Generation is also triggered after a ``syncdb``, at which time you will be prompted to generate default content. If you answer yes to the prompt content will be generated in the same way is if you had run the ``generate`` command manually. 
 
 As an example lets create 5 dummy users for testing.
 
 #. Create a ``generator.py`` in the app you want to generate content's path.
 
-#. Edit the file to look like this::
-
-    wdsf
-
 #. Make sure your app is specified in your ``INSTALLED_APPS`` setting. Also make sure your app has a ``models.py`` so Django installs it correctly.
+
+#. Edit the ``generator.py`` file to look like this::
+
+    def generate():
+        objects = []
+        for i in range(1, 6):
+            objects.append({
+                "model": "auth.User",
+                "fields": {
+                    "username": "user_%s" % i,
+                    "first_name": "User %s Name" % i,
+                    "is_staff": True,
+                },
+            })
+        return objects
+
+All this is really doing is generating a bunch of JSON serialized objects dynamically. The returned ``objects`` list looks like this::
+    
+    [{'fields': {'username': 'user_1', 'first_name': 'User 1 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_2', 'first_name': 'User 2 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_3', 'first_name': 'User 3 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_4', 'first_name': 'User 4 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_5', 'first_name': 'User 5 Name', 'is_staff': True}, 'model': 'auth.User'}]
+
+This is a normal Django JSON fixtures list of objects that will be created. You could just as easily have hard coded and returned this list instead of generating it usin the loop. The point is that the ``generate`` method should return a list of JSON serialized objects to be created.
+
+#. Run the generate management command to generate the objects::
+    
+    $ python manage.py generate
+    
+After the command completes you should have 5 newly created staff users in your database. If you were to run the generate command again no new users would be created as ``django-generate`` detects the presence of already generated objects.
+

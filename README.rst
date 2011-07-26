@@ -48,7 +48,7 @@ All this is really doing is generating a bunch of JSON serialized objects dynami
     
     [{'fields': {'username': 'user_1', 'first_name': 'User 1 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_2', 'first_name': 'User 2 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_3', 'first_name': 'User 3 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_4', 'first_name': 'User 4 Name', 'is_staff': True}, 'model': 'auth.User'}, {'fields': {'username': 'user_5', 'first_name': 'User 5 Name', 'is_staff': True}, 'model': 'auth.User'}]
 
-    This is a normal Django JSON fixtures list of objects that will be created. You could just as easily have hard coded and returned this list instead of generating it usin the loop. The point is that the ``generate`` method should return a list of JSON serialized objects to be created.
+This is a normal Django JSON fixtures list of objects that will be created. You could just as easily have hard coded and returned this list instead of generating it. The point is that the ``generate`` method should return a list of JSON serialized objects to be created.
 
 4. Run the generate management command to generate the objects::
     

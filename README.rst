@@ -2,10 +2,8 @@ Django Generate
 ===============
 **Django slightly smarter than fixtures content generation app.**
 
-Contents:
-
-.. toctree::
-   :maxdepth: 5
+.. contents:: Contents
+    :depth: 5
 
 Installation
 ------------

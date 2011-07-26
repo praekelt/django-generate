@@ -54,5 +54,7 @@ This is a normal Django JSON fixtures list of objects that will be created. You 
     
     $ python manage.py generate
     
-After the command completes you should have 5 newly created staff users in your database. If you were to run the generate command again no new users would be created as ``django-generate`` detects the presence of already generated objects.
+After the command completes you should have 5 newly created staff users in your database. If you were to run the generate command again no new users would be created as ``django-generate`` detects the presence of previously generated objects.
+
+Have a look at `jmbo-post's generator <https://github.com/praekelt/jmbo-post/blob/master/post/generator.py>`_ to see how objects with inheritance structures and file resources can be created very easily using ``django-generate``.
 

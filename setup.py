@@ -1,4 +1,10 @@
 from setuptools import setup, find_packages
+from setuptools.command.test import test
+
+def run_tests(self):
+    from setuptest.runtests import runtests
+    return runtests(self)
+test.run_tests = run_tests
 
 setup(
     name='django-generate',
@@ -10,6 +16,10 @@ setup(
     license='BSD',
     url='http://github.com/praekelt/django-generate',
     packages = find_packages(),
+    test_suite="generate.tests",
+    tests_require=[
+        'django-setuptest',
+    ],
     include_package_data=True,
     classifiers = [
         "Programming Language :: Python",

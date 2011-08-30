@@ -1,10 +1,13 @@
 import imp
-from django.core.management.base import BaseCommand, CommandError
+
+from django.core.management.base import BaseCommand
+
 from json_loader import load_json
+
 
 class Command(BaseCommand):
     def handle(self, *app_labels, **options):
-        from django.db.models import get_app, get_apps, get_models
+        from django.db.models import get_app, get_apps
 
         exclude = options.get('exclude', [])
 

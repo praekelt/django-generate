@@ -139,6 +139,7 @@ def generate_item(item):
 
 
 def load_json(source, data_formatter=None):
+    json_data = []
     if source.__class__ == str:
         source = fetch_from_cache(source)
         source = open(source, 'r')

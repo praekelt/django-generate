@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-generate',
-    version='0.0.3',
+    version='0.0.4',
     description='Django slightly smarter than fixtures content generation app.',
     long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
     author='Praekelt Foundation',

@@ -12,6 +12,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import get_model, DateField, DateTimeField, FileField, \
         ImageField
 from django.db.models.fields.related import ManyToManyField
+from django.db import transaction
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 USE_CACHE = True
@@ -45,6 +46,7 @@ def fetch_from_cache(source):
     return destination
 
 
+@transaction.autocommit
 def generate_item(item):
     app, model = item['model'].split('.')
     model = get_model(app, model)
@@ -101,7 +103,7 @@ def generate_item(item):
         obj, created = model.objects.get_or_create(**fields)
     else:
         existing = model.objects.all()
-        if existing:
+        if existing.exists():
             obj = existing[0]
             created = False
         else:

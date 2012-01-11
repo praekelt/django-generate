@@ -1,3 +1,4 @@
+import time
 import imp
 
 from django.core.management.base import BaseCommand
@@ -29,4 +30,7 @@ class Command(BaseCommand):
                 generator = imp.load_module(name + '.generator', *params)
 
                 print "Generating items for %s." % name.title()
+                start = time.time()
                 load_json(generator.generate())
+                now = time.time()
+                print "Generation completed in %s seconds" % (now - start)

@@ -52,13 +52,19 @@ def generate_item(item):
     model = get_model(app, model)
     model_instance = model(pk='dummy_pk')
     fields = {}
+    direct_foreign_key_fields = {}
     many_to_many_fields = {}
     image_fields = {}
     file_fields = {}
     password_field = ''
 
-    if item.has_key('fields'):
+    if 'fields' in item:
         for field, value in item['fields'].items():
+
+            # No need to recurse or process further if foreign key is provided
+            if field.endswith('_id'):
+                direct_foreign_key_fields[field] = value
+                continue
 
             if value.__class__ == list:
                 value_items = []
@@ -99,8 +105,17 @@ def generate_item(item):
             else:
                 fields[str(field)] = value
 
+    dirty = False
     if fields:
         obj, created = model.objects.get_or_create(**fields)
+
+        if created and direct_foreign_key_fields:
+            for k, v in direct_foreign_key_fields.items():
+                current = getattr(obj, k)
+                if current != v:
+                    setattr(obj, k, v)
+                    dirty = True
+
     else:
         existing = model.objects.all()
         if existing.exists():
@@ -121,6 +136,7 @@ def generate_item(item):
                     obj_field.add(val)
             else:
                 obj_field.add(value)
+            dirty = True
 
         for field, value in image_fields.items():
             field_attr = getattr(obj, field)
@@ -131,11 +147,14 @@ def generate_item(item):
             field_attr = getattr(obj, field)
             f = load_file(field, value)
             field_attr.save(f.name, f)
+            dirty = True
 
         if password_field:
             obj.set_password(password_field)
+            dirty = True
 
-        obj.save()
+        if dirty:
+            obj.save()
 
     return obj
 

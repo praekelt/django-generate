@@ -11,6 +11,9 @@ setup(
     url='http://github.com/praekelt/django-generate',
     packages = find_packages(),
     test_suite="setuptest.SetupTestSuite",
+    install_requires = [
+        'Django',
+    ],
     tests_require=[
         'django-setuptest>=0.0.6',
     ],

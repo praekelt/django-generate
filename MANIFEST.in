@@ -4,3 +4,4 @@ include LICENSE
 include README.rst
 recursive-include generate/management *
 recursive-include generate/resources *
+recursive-include generate/tests *

@@ -1,8 +1,12 @@
 Changelog
 =========
 
-0.0.4 (unreleased)
-------------------
+0.0.5
+-----
+#. Trivial release fixes scary comment in the changelog.
+
+0.0.4
+-----
 #. Use `exists` optimisation.
 #. Force commit on every execution of method since settings may specify a transaction managed database layer.
 #. Prevent redundant calls to save().

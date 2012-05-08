@@ -1,10 +1,6 @@
 Changelog
 =========
 
-0.0.5
------
-#. Trivial release fixes scary comment in the changelog.
-
 0.0.4
 -----
 #. Use `exists` optimisation.

@@ -12,7 +12,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import get_model, DateField, DateTimeField, FileField, \
         ImageField
 from django.db.models.fields.related import ManyToManyField
-from django.db import transaction
+from django.db import transaction, connection
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 USE_CACHE = True
@@ -112,7 +112,7 @@ def generate_item(item):
         for k, v in fields.iteritems():
             field = model._meta.get_field(k)
             try:
-                field.get_db_prep_lookup('exact', v)
+                field.get_db_prep_lookup('exact', v, connection)
                 exact_fields[k] = v
             except:
                 other_fields[k] = v

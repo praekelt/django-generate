@@ -5,7 +5,7 @@ from django.db.models import signals
 def generate(app, created_models, verbosity, **kwargs):
     from django.core.management import call_command
     if kwargs.get('interactive', True):
-        msg = "\nInstallation complete. Do you want to genererate default \
+        msg = "\nInstallation complete. Do you want to generate default \
                 content? (yes/no): "
         confirm = raw_input(msg)
         while 1:

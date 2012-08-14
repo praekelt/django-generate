@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.0.5
+-----
+#. Only pass fields that support an exact lookup to get_or_create.
+
 0.0.4
 -----
 #. Use `exists` optimisation.

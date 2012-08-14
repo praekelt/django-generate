@@ -12,7 +12,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import get_model, DateField, DateTimeField, FileField, \
         ImageField
 from django.db.models.fields.related import ManyToManyField
-from django.db import transaction
+from django.db import transaction, connection
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 USE_CACHE = True
@@ -107,7 +107,21 @@ def generate_item(item):
 
     dirty = False
     if fields:
-        obj, created = model.objects.get_or_create(**fields)
+        exact_fields = {}
+        other_fields = {}
+        for k, v in fields.iteritems():
+            field = model._meta.get_field(k)
+            try:
+                field.get_db_prep_lookup('exact', v, connection)
+                exact_fields[k] = v
+            except:
+                other_fields[k] = v
+        obj, created = model.objects.get_or_create(**exact_fields)
+        
+        if created and other_fields:
+            for k, v in other_fields.iteritems():
+                setattr(obj, k, v)
+            dirty = True
 
         if created and direct_foreign_key_fields:
             for k, v in direct_foreign_key_fields.items():

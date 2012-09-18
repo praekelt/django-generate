@@ -116,7 +116,7 @@ def generate_item(item):
                 exact_fields[k] = v
             except:
                 other_fields[k] = v
-        obj, created = model.objects.get_or_create(**exact_fields)
+        obj, created = model._default_manager.get_or_create(**exact_fields)
         
         if created and other_fields:
             for k, v in other_fields.iteritems():
@@ -131,7 +131,7 @@ def generate_item(item):
                     dirty = True
 
     else:
-        existing = model.objects.all()
+        existing = model._default_manager.all()
         if existing.exists():
             obj = existing[0]
             created = False
